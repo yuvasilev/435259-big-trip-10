@@ -1,3 +1,5 @@
+'use strict';
+
 const createRouteTemplate = () =>
   `<div class="trip-info__main">
       <h1 class="trip-info__title">Amsterdam &mdash; ... &mdash; Amsterdam</h1>
@@ -74,11 +76,11 @@ const createTripDayTemplate = (dayNum) =>
     </div>
     
     <ul class="trip-events__list">
-      ${['', '', '', ''].map((event, index) =>
-        index === 1 
-          ? createTripEditEventTemplate() : 
-          createTripEventTemplate()  
-      ).join('')}    
+  ${[``, ``, ``, ``].map((event, index) =>
+    index === 1
+      ? createTripEditEventTemplate() :
+      createTripEventTemplate()
+  ).join(``)}    
     </ul>
   </li>`;
 
@@ -331,7 +333,7 @@ render(tripEventsElement, createTripDaysTemplate(), `beforeend`);
 
 const tripDaysElement = document.querySelector(`.trip-days`);
 
-['', '', ''].map((day, index) =>
+[``, ``, ``].map((day, index) =>
   render(tripDaysElement, createTripDayTemplate(index + 1), `beforeend`)
 );
 
