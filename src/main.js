@@ -5,6 +5,8 @@ import {createSortingTemplate} from "./components/sorting";
 import {createTripDaysTemplate} from "./components/trip-days";
 import {createTripDayTemplate} from "./components/trip-day";
 
+import {generateDays} from "./mock/point";
+
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -26,7 +28,9 @@ render(tripEventsElement, createTripDaysTemplate(), `beforeend`);
 
 const tripDaysElement = document.querySelector(`.trip-days`);
 
-[``, ``, ``].map((day, index) =>
-  render(tripDaysElement, createTripDayTemplate(index + 1), `beforeend`)
+const days = generateDays(4);
+
+days.map((day, index) =>
+  render(tripDaysElement, createTripDayTemplate(day, index + 1), `beforeend`)
 );
 
