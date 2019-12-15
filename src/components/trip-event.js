@@ -1,7 +1,7 @@
 export const createTripEventTemplate = (point) => {
   const getFormattedTime = (date) =>
-    `${date.getHours() < 10 
-      ? `0${date.getHours()}` : date.getHours()}:${date.getMinutes() < 10 
+    `${date.getHours() < 10
+      ? `0${date.getHours()}` : date.getHours()}:${date.getMinutes() < 10
       ? `0${date.getMinutes()}` : date.getMinutes()}`;
 
   const getFormattedTimeDiff = () => {
@@ -9,24 +9,30 @@ export const createTripEventTemplate = (point) => {
     const timeDiffHours = (timeDiff / (1000 * 60)) / 60;
     const timeDiffMinutes = (timeDiff / (1000 * 60)) % 60;
 
-    return `${Math.floor(timeDiffHours) < 10 
-      ? `0${Math.floor(timeDiffHours)}` 
-      : Math.floor(timeDiffHours)}H ${timeDiffMinutes < 10 ? `0${timeDiffMinutes}` : timeDiffMinutes}M`
+    return `${Math.floor(timeDiffHours) < 10
+      ? `0${Math.floor(timeDiffHours)}`
+      : Math.floor(timeDiffHours)}H ${timeDiffMinutes < 10 ? `0${timeDiffMinutes}` : timeDiffMinutes}M`;
   };
 
   let offersCounter = 0;
   const getOffersMarkup = (offers) => offers.map((offer) => {
-    if (!offer.active) return;
-    if (offersCounter >= 2) return;
+    if (!offer.active) {
+      return;
+    }
 
-    offersCounter ++;
+    if (offersCounter >= 2) {
+      return;
+    }
+
+    offersCounter++;
+    /* eslint-disable-next-line */
     return (`
       <li class="event__offer">
         <span class="event__offer-title">${offer.title}</span>
         &plus;
         &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
        </li>
-    `)
+    `);
   }).join(``);
 
   return (
@@ -60,5 +66,5 @@ export const createTripEventTemplate = (point) => {
         </button>
       </div>
     </li>`
-  )
+  );
 };

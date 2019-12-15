@@ -5,7 +5,7 @@ import {Months} from "../const";
 
 export const createTripDayTemplate = (day, dayNum) => {
   const getFormattedDate = () =>
-    `${Months[day.date.getMonth()]} ${day.date.getDate() < 10 ? `0${day.date.getDate()}`: day.date.getDate()}`;
+    `${Months[day.date.getMonth()]} ${day.date.getDate() < 10 ? `0${day.date.getDate()}` : day.date.getDate()}`;
 
   return (
     `<li class="trip-days__item  day">
@@ -16,12 +16,12 @@ export const createTripDayTemplate = (day, dayNum) => {
         
         <ul class="trip-events__list">
       ${day.events.map((event, index) =>
-          index === 1
-            ? createTripEditEventTemplate(event) :
-            createTripEventTemplate(event)
-        ).join(``)}    
+      index === 1
+        ? createTripEditEventTemplate(event) :
+        createTripEventTemplate(event)
+    ).join(``)}    
         </ul>
       </li>`
-  )
+  );
 };
 

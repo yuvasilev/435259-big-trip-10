@@ -1,4 +1,4 @@
-import {Types, Cities, Places, Options, Description, Months} from "../const";
+import {Types, Cities, Places, Options, Description} from "../const";
 
 const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
@@ -7,9 +7,9 @@ const getRandomArrayItem = (array) => {
 };
 
 const getRandomOneOfArrayItem = (firstArray, secondArray) => {
-  return Math.random() > .5
+  return Math.random() > 0.5
     ? getRandomArrayItem(firstArray)
-    : getRandomArrayItem(secondArray)
+    : getRandomArrayItem(secondArray);
 };
 
 const getRandomIntegerNumber = (min, max) => {
@@ -19,8 +19,7 @@ const getRandomIntegerNumber = (min, max) => {
 const getRandomHours = () => {
   const targetDate = new Date();
 
-  targetDate.setHours(targetDate.getHours() + getRandomIntegerNumber(0, 7),
-    targetDate.getMinutes() + getRandomIntegerNumber(0, 60));
+  targetDate.setHours(targetDate.getHours() + getRandomIntegerNumber(0, 7), targetDate.getMinutes() + getRandomIntegerNumber(0, 60));
 
   return targetDate;
 };
@@ -36,13 +35,14 @@ export const generatePoint = () => {
     type: getRandomArrayItem(Types),
     destination: getRandomOneOfArrayItem(Cities, Places),
     time: {
-      from: new Date,
+      from: new Date(),
       to: getRandomHours()
     },
     price: getRandomIntegerNumber(10, 200),
     options: Options.map((option) => ({
-      title: option,
-      active: Math.random() > .5,
+      type: option.type,
+      title: option.label,
+      active: Math.random() > 0.5,
       price: getRandomIntegerNumber(10, 200),
     })),
     description: {
@@ -55,8 +55,8 @@ export const generatePoint = () => {
         `http://picsum.photos/300/150?r=${Math.random()}`
       ]
     },
-    isFavorite: Math.random() > .5
-  }
+    isFavorite: Math.random() > 0.5
+  };
 };
 
 export const generateDay = (count) => {
@@ -67,11 +67,12 @@ export const generateDay = (count) => {
 export const generateDays = (count) => {
   return new Array(count)
     .fill(``).map((day, index) => {
-      const date = new Date;
+      const date = new Date();
       date.setDate(date.getDate() + index);
 
       return {
-        date, events: generateDay(4)}
+        date, events: generateDay(4)
+      };
     });
 };
 

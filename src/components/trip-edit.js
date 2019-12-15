@@ -4,7 +4,7 @@ export const createTripEditEventTemplate = (point) => {
   const getCitiesOptions = () =>
     Cities.map((city) => `<option value="${city}"></option>`);
 
-  const getFormattedDate = (date) => `${date.toLocaleDateString().replace(/\./gi, '/')}`;
+  const getFormattedDate = (date) => `${date.toLocaleDateString().replace(/\./gi, `/`)}`;
 
   const getFormattedTime = (date) =>
     `${date.getHours() < 10
@@ -14,8 +14,8 @@ export const createTripEditEventTemplate = (point) => {
   const getOffersMarkup = (offers) =>
     offers.map((offer) => (
       `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${offer.active ? `checked` : ``}>
-        <label class="event__offer-label" for="event-offer-luggage-1">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.type}-1" type="checkbox" name="event-offer-${offer.type}" ${offer.active ? `checked` : ``}>
+        <label class="event__offer-label" for="event-offer-${offer.type}-1">
           <span class="event__offer-title">${offer.title}</span>
           &plus;
           &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
@@ -89,7 +89,7 @@ export const createTripEditEventTemplate = (point) => {
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn" type="reset">Delete</button>
   
-          <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${point.isFavorite ? `checked`: ``}>
+          <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${point.isFavorite ? `checked` : ``}>
           <label class="event__favorite-btn" for="event-favorite-1">
             <span class="visually-hidden">Add to favorite</span>
             <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -125,5 +125,5 @@ export const createTripEditEventTemplate = (point) => {
         </section>
       </form>
     </li>`
-  )
+  );
 };
