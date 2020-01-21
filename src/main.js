@@ -1,39 +1,69 @@
-import {createRouteTemplate} from "./components/route";
-import {createTripCostTemplate} from "./components/trip-cost";
-import {createSiteMenuTemplate} from "./components/site-menu";
-import {createFiltersTemplate} from "./components/filters";
-import {createSortingTemplate} from "./components/sorting";
-import {createTripDaysTemplate} from "./components/trip-days";
-import {createTripDayTemplate} from "./components/trip-day";
+import RouteComponent from "./components/route";
+import TripCostComponent from "./components/trip-cost";
+import SiteMenuComponent from "./components/site-menu";
+import FiltersComponent from "./components/filters";
+import SortingComponent from "./components/sorting";
+import TripDaysComponent from "./components/trip-days";
+import TripDayComponent from "./components/trip-day";
+import TripEventComponent from "./components/trip-event";
+import TripEditComponent from "./components/trip-edit";
 
 import {generateDays} from "./mock/point";
 import {Filters} from "./const";
+import {render, RenderPosition} from './utils.js';
 
 const days = generateDays(4);
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 const tripInfoElement = document.querySelector(`.trip-info`);
 
-render(tripInfoElement, createRouteTemplate(days), `afterbegin`);
-render(tripInfoElement, createTripCostTemplate(days), `beforeend`);
+render(tripInfoElement, new RouteComponent(days).getElement(), RenderPosition.AFTERBEGIN);
+render(tripInfoElement, new TripCostComponent(days).getElement(), RenderPosition.BEFOREEND);
 
 const tripControlsElement = document.querySelector(`.trip-controls`);
 const menuTitleElement = document.querySelector(`.trip-controls > .visually-hidden`);
 
-render(tripControlsElement, createFiltersTemplate(Filters), `beforeend`);
-render(menuTitleElement, createSiteMenuTemplate(), `afterend`);
+render(tripControlsElement, new FiltersComponent(Filters).getElement(), RenderPosition.BEFOREEND);
+render(menuTitleElement, new SiteMenuComponent(), RenderPosition.AFTEREND);
 
 const tripEventsElement = document.querySelector(`.trip-events`);
 
-render(tripEventsElement, createSortingTemplate(), `beforeend`);
-render(tripEventsElement, createTripDaysTemplate(), `beforeend`);
+render(tripEventsElement, new SortingComponent().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsElement, new TripDaysComponent().getElement(), RenderPosition.BEFOREEND);
 
 const tripDaysElement = document.querySelector(`.trip-days`);
 
-days.map((day, index) =>
-  render(tripDaysElement, createTripDayTemplate(day, index + 1), `beforeend`)
-);
+const renderEvent = (tripDayListElement, event) => {
+  const tripEventComponent = new TripEventComponent(event);
+  const tripEditComponent = new TripEditComponent(event);
+
+  const replaceEditToEvent = () => {
+    tripDayListElement.replaceChild(tripEventComponent.getElement(), tripEditComponent.getElement());
+  };
+
+  const replaceEventToEdit = () => {
+    tripDayListElement.replaceChild(tripEditComponent.getElement(), tripEventComponent.getElement());
+  };
+
+  const toExpandButton = tripEventComponent.getElement().querySelector(`.event__rollup-btn`);
+  const toNarrowButton = tripEditComponent.getElement().querySelector(`.event__rollup-btn`);
+
+  toExpandButton.addEventListener(`click`, replaceEventToEdit);
+  toNarrowButton.addEventListener(`click`, replaceEditToEvent);
+
+  const editForm = tripEditComponent.getElement().querySelector(`form`);
+  editForm.addEventListener(`submit`, replaceEditToEvent);
+
+  render(tripDayListElement, tripEventComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
+days.map((day, index) => {
+  const tripDayComponent = new TripDayComponent(day, index + 1);
+  render(tripDaysElement, tripDayComponent.getElement(), RenderPosition.BEFOREEND);
+
+  const tripDayListElement = tripDayComponent.getElement().querySelector(`.trip-events__list`);
+
+  day.events.forEach((event) => {
+    renderEvent(tripDayListElement, event);
+  });
+});
 

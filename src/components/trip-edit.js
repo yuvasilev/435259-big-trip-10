@@ -1,6 +1,7 @@
 import {Cities, Types} from "../const";
+import {createElement} from "../utils";
 
-export const createTripEditEventTemplate = (point) => {
+const createTripEditEventTemplate = (point) => {
   const getCitiesOptions = () =>
     Cities.map((city) => `<option value="${city}"></option>`);
 
@@ -127,3 +128,26 @@ export const createTripEditEventTemplate = (point) => {
     </li>`
   );
 };
+
+export default class TripEdit {
+  constructor(point) {
+    this._point = point;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripEditEventTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

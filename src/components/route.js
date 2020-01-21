@@ -1,6 +1,7 @@
 import {Months} from '../const';
+import {createElement} from "../utils";
 
-export const createRouteTemplate = (days) => {
+const createRouteTemplate = (days) => {
   const getFirstDestination = () => days[0].events[0].destination;
   const getLastDestination = () => {
     const daysLastIndex = days.length - 1;
@@ -24,3 +25,26 @@ export const createRouteTemplate = (days) => {
     </div>`
   );
 };
+
+export default class Route {
+  constructor(days) {
+    this._days = days;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createRouteTemplate(this._days);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

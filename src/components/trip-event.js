@@ -1,4 +1,6 @@
-export const createTripEventTemplate = (point) => {
+import {createElement} from "../utils";
+
+const createTripEventTemplate = (point) => {
   const getFormattedTime = (date) =>
     `${date.getHours() < 10
       ? `0${date.getHours()}` : date.getHours()}:${date.getMinutes() < 10
@@ -68,3 +70,27 @@ export const createTripEventTemplate = (point) => {
     </li>`
   );
 };
+
+export default class TripEvent {
+  constructor(point) {
+    this._point = point;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripEventTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
