@@ -16,7 +16,7 @@ const createTripCostTemplate = (days) => {
 
   return (
     `<p class="trip-info__cost">
-      Total: &euro;&nbsp;<span class="trip-info__cost-value">${getTripCost()}</span>
+      Total: &euro;&nbsp;<span class="trip-info__cost-value">${days.length === 0 ? 0 : getTripCost()}</span>
     </p>`
   );
 };
